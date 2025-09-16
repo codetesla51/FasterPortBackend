@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/*.go": {
+      "runtime": "go1.x",
+      "memory": 1024
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.go"
+    }
+  ]
+}
