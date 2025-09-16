@@ -1,9 +1,6 @@
-// api/index.go
 package main
 
 import (
-	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -14,33 +11,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var router *gin.Engine
+func Handler(w http.ResponseWriter, r *http.Request) {
+	config.ConnectDB() // initialize DB
 
-func init() {
-	config.ConnectDB()
-
-	router = gin.New()
+	router := gin.New()
 	router.Use(gin.Recovery())
-
-	// CORS config
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://devuthman.vercel.app"}, 
+		AllowOrigins:     []string{"https://devuthman.vercel.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// Routes
+	// Health check
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
 
+	// Project routes
 	router.GET("/projects", handlers.GetProjects)
 	router.GET("/projects/:slug", handlers.GetProject)
-	router.POST("/contact", handlers.StoreMessageHandler)
-}
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+	// Contact route
+	router.POST("/contact", handlers.StoreMessageHandler)
+
 	router.ServeHTTP(w, r)
 }
