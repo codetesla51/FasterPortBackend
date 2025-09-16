@@ -1,6 +1,6 @@
 module github.com/codetesla51/portBackend
 
-go 1.25.0
+go 1.20
 
 require (
 	github.com/gin-gonic/gin v1.10.1
