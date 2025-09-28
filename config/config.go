@@ -2,7 +2,7 @@ package config
 
 import (
 	"context"
-	"fmt"
+	
 	"log"
 	"os"
 	"time"
@@ -24,7 +24,7 @@ func ConnectDB() {
 		log.Fatal("DATABASE_URL not set in environment")
 	}
 
-	fmt.Println("Trying to connect to DB...")
+	
 
 	cfg, err := pgxpool.ParseConfig(dbURL)
 	if err != nil {
@@ -46,5 +46,5 @@ func ConnectDB() {
 	}
 
 	DB = pool
-	fmt.Println("Connected to Postgres!")
+	
 }
